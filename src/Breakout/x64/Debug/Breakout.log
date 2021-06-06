@@ -1,0 +1,8 @@
+﻿  Application.cpp
+D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(29,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(30,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(145,44): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(145,31): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
+  Main.cpp
+  Generating Code...
+  Breakout.vcxproj -> D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\x64\Debug\Breakout.exe
