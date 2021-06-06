@@ -147,6 +147,8 @@
     <ClCompile Include="buffers\IndexBuffer.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="buffers\VertexBuffer.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -156,7 +158,15 @@
     <ClInclude Include="buffers\IndexBuffer.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Settings.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="VertexArray.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\lighting.frag.glsl" />
+    <None Include="res\lighting.vert.glsl" />
+    <None Include="res\light_cube.frag.glsl" />
+    <None Include="res\light_cube.vert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -10,6 +10,8 @@
 
 #include "Camera.h"
 #include "Settings.h"
+#include "Shader.h"
+#include "Texture.h"
 
 // camera initialization
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -91,7 +93,7 @@ void Application::Run()
         return;
 
     // glfw window creation
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Breakout", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, WINDOW_TITLE, NULL, NULL);
 
     if (!window)
     {
@@ -141,6 +143,73 @@ void Application::Run()
 
 void Application::Init()
 {
+    float vertices[] = {
+        // positions          // normals           // texture coords
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+         0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
+         0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
+
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+
+         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+
+        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
+
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
+    };
+
+    std::unique_ptr<VertexBuffer> vbo(new VertexBuffer(vertices, sizeof(vertices)));
+
+    vbo->Bind();
+
+    vbo->SetLayout(
+        {
+            {"aPos", Float3},
+            {"aNorm", Float3},
+            {"aTexCoords", Float2}
+        }
+    );
+
+    _va = std::make_unique<VertexArray>();
+    _va->SetVertexBuffer(std::move(vbo));
+    _va->Bind();
+
+    _shader = std::make_unique<Shader>("res\\lighting.vert.glsl", "res\\lighting.frag.glsl");
+    _lightCubeShader = std::make_unique<Shader>("res\\light_cube.vert.glsl", "res\\light_cube.frag.glsl");
+
+    _diffuseTexture = std::make_unique<Texture>("res\\container2.png");
+    _specularTexture = std::make_unique<Texture>("res\\container2_specular.png");
+	
     glEnable(GL_DEPTH_TEST);
 }
 
@@ -150,10 +219,46 @@ void Application::Update(float dt)
 	
     const auto projectionMatrix = 
         glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+
+    _shader->use();
+    _shader->setFloatMat4("view", viewMatrix);
+    _shader->setFloatMat4("projection", projectionMatrix);
+
+    _lightCubeShader->use();
+    _lightCubeShader->setFloatMat4("view", viewMatrix);
+    _lightCubeShader->setFloatMat4("projection", projectionMatrix);
 }
 
 void Application::Render()
 {
-    glClearColor(1.0f, 1.0f, 1.0f, 1.f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    _va->Bind();
+
+    _shader->use();
+
+    _shader->setFloat3("light.position", _lightPos);
+    _shader->setFloat3("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+    _shader->setFloat3("light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f)); // darken diffuse light a bit
+    _shader->setFloat3("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+    _shader->setFloat3("viewPos", camera.Position);
+
+    _diffuseTexture->Bind(0);
+    _specularTexture->Bind(1);
+
+    _shader->setInt("material.diffuse", 0);
+    _shader->setInt("material.specular", 1);
+    _shader->setFloat("material.shininess", 32.0f);
+
+    glm::mat4 model = glm::mat4(1.0f);
+    _shader->setFloatMat4("model", model);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+
+    _lightCubeShader->use();
+    model = glm::mat4(1.0f);
+    model = glm::translate(model, _lightPos);
+    model = glm::scale(model, glm::vec3(0.2f));
+    _lightCubeShader->setFloatMat4("model", model);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
 }
