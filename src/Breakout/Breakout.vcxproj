@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="models\Ball.cpp" />
     <ClCompile Include="buffers\BufferLayout.cpp" />
     <ClCompile Include="deps\glad\src\glad.c" />
     <ClCompile Include="buffers\IndexBuffer.cpp" />
@@ -153,6 +154,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="models\Mesh.h" />
+    <ClInclude Include="models\Model.h" />
+    <ClInclude Include="models\Ball.h" />
     <ClInclude Include="buffers\BufferLayout.h" />
     <ClInclude Include="buffers\VertexBuffer.h" />
     <ClInclude Include="buffers\IndexBuffer.h" />
