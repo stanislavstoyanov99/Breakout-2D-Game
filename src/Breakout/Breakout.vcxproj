@@ -154,6 +154,8 @@
     <ClInclude Include="buffers\BufferLayout.h" />
     <ClInclude Include="buffers\VertexBuffer.h" />
     <ClInclude Include="buffers\IndexBuffer.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Settings.h" />
     <ClInclude Include="VertexArray.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

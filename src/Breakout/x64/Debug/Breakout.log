@@ -1,14 +1,8 @@
 ﻿  Application.cpp
-D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(29,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(30,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(145,44): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(145,31): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
-  BufferLayout.cpp
-  IndexBuffer.cpp
-  Main.cpp
-  VertexBuffer.cpp
-  VertexArray.cpp
-D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\VertexArray.cpp(32,55): warning C4312: 'type cast': conversion from 'const unsigned int' to 'void *' of greater size
-  Generating Code...
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(43,32): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(43,25): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
+D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(44,33): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(44,25): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
+D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(127,44): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(127,31): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
   Breakout.vcxproj -> D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\x64\Debug\Breakout.exe
