@@ -142,18 +142,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="models\Brick.cpp" />
     <ClCompile Include="models\Ball.cpp" />
     <ClCompile Include="buffers\BufferLayout.cpp" />
     <ClCompile Include="deps\glad\src\glad.c" />
     <ClCompile Include="buffers\IndexBuffer.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="buffers\VertexBuffer.cpp" />
+    <ClCompile Include="models\Player.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="models\Brick.h" />
     <ClInclude Include="models\Mesh.h" />
     <ClInclude Include="models\Model.h" />
     <ClInclude Include="models\Ball.h" />
@@ -161,6 +164,7 @@
     <ClInclude Include="buffers\VertexBuffer.h" />
     <ClInclude Include="buffers\IndexBuffer.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="models\Player.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Texture.h" />

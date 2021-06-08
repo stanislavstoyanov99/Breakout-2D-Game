@@ -1,12 +1,17 @@
 #include "Ball.h"
 
-//Constructor
 Ball::Ball()
+	: Model("", false)
 {
-	_position = { 0.0f, 0.0f, 0.0f };
-	_scale = { 1.0f, 1.0f, 0.0f };
-	_velocity = { 0.0f, 0.0f, 0.0f };
-	_color = { 1.0f, 1.0f, 1.0f };
 	
-	_radius = 1.0f;
+}
+
+Ball::Ball(std::string const& path, bool gamma)
+	: Model(path, gamma)
+{
+	position = { 0.0f, 0.0f, 0.0f };
+	scale = { 1.0f, 1.0f, 0.0f };
+	velocity = { 0.0f, 0.0f, 0.0f };
+	
+	radius = 1.0f;
 }

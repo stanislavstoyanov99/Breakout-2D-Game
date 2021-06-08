@@ -1,20 +1,18 @@
 #pragma once
 
-#include <glad/glad.h>
 #include <glm/vec3.hpp>
 
-class Ball
+#include "Model.h"
+
+class Ball : public Model
 {
 public:
-	//Constructor
 	Ball();
+	Ball(std::string const& path, bool gamma = false);
 
-private:
-	//Variables
-	glm::vec3 _position;
-	glm::vec3 _scale;
-	glm::vec3 _velocity;
-	glm::vec3 _color;
+	glm::vec3 position;
+	glm::vec3 scale;
+	glm::vec3 velocity;
 
-	GLfloat _radius;
+	float radius;
 };

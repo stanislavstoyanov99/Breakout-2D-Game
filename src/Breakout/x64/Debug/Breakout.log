@@ -1,17 +1,18 @@
-﻿  Application.cpp
-D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(45,32): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(45,25): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
-D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(46,33): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(46,25): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
-D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(129,44): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(129,31): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
+﻿  Brick.cpp
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.28.29910\include\memory(3579,1): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
 D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\models\Mesh.h(107): message : see reference to function template instantiation 'std::unique_ptr<VertexBuffer,std::default_delete<VertexBuffer>> std::make_unique<VertexBuffer,_Ty*,unsigned __int64,0>(_Ty *&&,unsigned __int64 &&)' being compiled
           with
           [
               _Ty=Vertex
           ]
-  Main.cpp
+  Ball.cpp
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.28.29910\include\memory(3579,1): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\models\Mesh.h(107): message : see reference to function template instantiation 'std::unique_ptr<VertexBuffer,std::default_delete<VertexBuffer>> std::make_unique<VertexBuffer,_Ty*,unsigned __int64,0>(_Ty *&&,unsigned __int64 &&)' being compiled
+          with
+          [
+              _Ty=Vertex
+          ]
+  Player.cpp
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.28.29910\include\memory(3579,1): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
 D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\models\Mesh.h(107): message : see reference to function template instantiation 'std::unique_ptr<VertexBuffer,std::default_delete<VertexBuffer>> std::make_unique<VertexBuffer,_Ty*,unsigned __int64,0>(_Ty *&&,unsigned __int64 &&)' being compiled
           with
@@ -19,5 +20,4 @@ D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breako
               _Ty=Vertex
           ]
   Generating Code...
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   Breakout.vcxproj -> D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\x64\Debug\Breakout.exe
