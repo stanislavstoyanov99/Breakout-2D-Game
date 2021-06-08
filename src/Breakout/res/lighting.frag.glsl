@@ -1,8 +1,8 @@
 #version 460 core
 
 struct Material {
-    sampler2D diffuse;
-    sampler2D specular;
+    sampler2D texture_diffuse1;
+    sampler2D texture_specular1;
     float shininess;
 };
 
@@ -27,7 +27,7 @@ in vec2 TexCoords;
 
 void main()
 {    
-    vec3 diffuseColor = vec3(texture(material.diffuse, TexCoords));
+    vec3 diffuseColor = vec3(texture(material.texture_diffuse1, TexCoords));
 
     // ambient
     vec3 ambient = light.ambient * diffuseColor;
@@ -42,7 +42,7 @@ void main()
     vec3 viewDir = normalize(viewPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);  
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    vec3 specular = light.specular * spec * vec3(texture(material.specular, TexCoords));  
+    vec3 specular = light.specular * spec * vec3(texture(material.texture_specular1, TexCoords));  
     
     // combined
     vec3 result = ambient + diffuse + specular;

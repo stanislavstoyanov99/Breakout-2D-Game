@@ -5,6 +5,7 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "VertexArray.h"
+#include "models/Model.h"
 
 struct GLFWwindow;
 
@@ -26,6 +27,8 @@ private:
 	std::unique_ptr<VertexArray> _va;
 	std::unique_ptr<Shader> _shader;
 	std::unique_ptr<Shader> _lightCubeShader;
+
+	std::unique_ptr<Model> _backpack;
 
 	std::unique_ptr<Texture> _diffuseTexture;
 	std::unique_ptr<Texture> _specularTexture;

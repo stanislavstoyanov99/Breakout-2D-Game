@@ -160,6 +160,7 @@ private:
 		
 		// process materials
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+		
 		// we assume a convention for sampler names in the shaders. Each diffuse texture should be named
 		// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
 		// Same applies to other texture as the following list summarizes:
@@ -216,10 +217,10 @@ private:
 				// if texture hasn't been loaded already, load it
 				TextureInfo textureInfo;
 				
-				std::make_unique<Texture>(str.C_Str());
+				auto texture = std::make_unique<Texture>();
+				auto filename = this->directory + '\\' + str.C_Str();
 
-				// Pass the created texture's id to textureInfo struct
-				/*textureInfo.id = ;*/
+				textureInfo.id = texture->Load(filename);
 				textureInfo.type = typeName;
 				textureInfo.path = str.C_Str();
 				textures.push_back(textureInfo);

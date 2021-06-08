@@ -36,13 +36,10 @@ struct TextureInfo
 class Mesh
 {
 public:
-	// mesh Data
-	std::vector<TextureInfo> textures;
-
 	// constructor
 	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<TextureInfo> textures)
 	{
-		this->textures = textures;
+		this->_textures = textures;
 
 		// now that we have all the required data, set the vertex buffers and its attribute pointers.
 		setupMesh(vertices, indices);
@@ -57,13 +54,13 @@ public:
 		unsigned int normalNr = 1;
 		unsigned int heightNr = 1;
 
-		for (unsigned int i = 0; i < textures.size(); i++)
+		for (unsigned int i = 0; i < _textures.size(); i++)
 		{
 			glActiveTexture(GL_TEXTURE0 + i); // active proper texture unit before binding
 
 			// retrieve texture number (the N in diffuse_textureN)
 			std::string number;
-			std::string name = textures[i].type;
+			std::string name = _textures[i].type;
 			
 			if (name == "texture_diffuse")
 			{
@@ -86,7 +83,7 @@ public:
 			shader.setInt(name + number, i);
 
 			// and finally bind the texture
-			glBindTexture(GL_TEXTURE_2D, textures[i].id);
+			glBindTexture(GL_TEXTURE_2D, _textures[i].id);
 		}
 
 		// draw mesh
@@ -99,6 +96,7 @@ public:
 	}
 
 private:
+	std::vector<TextureInfo> _textures;
 	std::unique_ptr<VertexArray> _vao;
 
 	void setupMesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices)

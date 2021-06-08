@@ -207,8 +207,7 @@ void Application::Init()
     _shader = std::make_unique<Shader>("res\\lighting.vert.glsl", "res\\lighting.frag.glsl");
     _lightCubeShader = std::make_unique<Shader>("res\\light_cube.vert.glsl", "res\\light_cube.frag.glsl");
 
-    _diffuseTexture = std::make_unique<Texture>("res\\container2.png");
-    _specularTexture = std::make_unique<Texture>("res\\container2_specular.png");
+    _backpack = std::make_unique<Model>("res\\models\\backpack\\backpack.obj");
 	
     glEnable(GL_DEPTH_TEST);
 }
@@ -234,31 +233,28 @@ void Application::Render()
     glClearColor(0.0f, 0.0f, 0.0f, 1.f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    _va->Bind();
-
     _shader->use();
+
+    _shader->setFloat3("viewPos", camera.Position);
+
+    _shader->setFloat("material.shininess", 32.0f);
 
     _shader->setFloat3("light.position", _lightPos);
     _shader->setFloat3("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
     _shader->setFloat3("light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f)); // darken diffuse light a bit
     _shader->setFloat3("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
-    _shader->setFloat3("viewPos", camera.Position);
 
-    _diffuseTexture->Bind(0);
-    _specularTexture->Bind(1);
-
-    _shader->setInt("material.diffuse", 0);
-    _shader->setInt("material.specular", 1);
-    _shader->setFloat("material.shininess", 32.0f);
-
-    glm::mat4 model = glm::mat4(1.0f);
+    auto model = glm::mat4(1.0f);
     _shader->setFloatMat4("model", model);
-    glDrawArrays(GL_TRIANGLES, 0, 36);
+    _backpack->Draw(*_shader);
 
     _lightCubeShader->use();
+    _va->Bind();
+
     model = glm::mat4(1.0f);
     model = glm::translate(model, _lightPos);
     model = glm::scale(model, glm::vec3(0.2f));
+	
     _lightCubeShader->setFloatMat4("model", model);
     glDrawArrays(GL_TRIANGLES, 0, 36);
 }
