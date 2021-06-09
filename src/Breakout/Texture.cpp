@@ -6,7 +6,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image/stb_image.h>
 
-Texture::Texture()
+unsigned int Texture::Load(const std::string& fileName)
 {
     // generate and bind the textures
     glGenTextures(1, &_texture);
@@ -17,10 +17,7 @@ Texture::Texture()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-}
 
-unsigned int Texture::Load(const std::string& fileName)
-{
     int nrChannels;
     unsigned char* data = stbi_load(fileName.c_str(), &_width, &_height, &nrChannels, 0);
 
@@ -41,7 +38,6 @@ unsigned int Texture::Load(const std::string& fileName)
             format = GL_RGBA;
         }
 
-        Bind(_texture);
         glTexImage2D(GL_TEXTURE_2D, 0, format, _width, _height, 0, format, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     }

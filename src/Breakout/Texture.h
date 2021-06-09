@@ -5,10 +5,8 @@
 class Texture
 {
 public:
-	Texture();
-
-	void Bind(unsigned textureSlot = 0) const;
 	unsigned int Load(const std::string& fileName);
+	void Bind(unsigned textureSlot = 0) const;
 
 	int GetWidth() const { return _width; }
 	int GetHeight() const { return _height; }

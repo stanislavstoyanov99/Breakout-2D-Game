@@ -1,7 +1,7 @@
 #include "Ball.h"
 
 Ball::Ball()
-	: Model("", false)
+	: Model()
 {
 	
 }

@@ -30,6 +30,11 @@ public:
 	std::string directory;
 	bool gammaCorrection;
 
+	Model()
+	{
+
+	}
+
 	// constructor, expects a filepath to a 3D model.
 	Model(std::string const& path, bool gamma = false)
 		: gammaCorrection(gamma)
@@ -218,9 +223,8 @@ private:
 				TextureInfo textureInfo;
 				
 				auto texture = std::make_unique<Texture>();
-				auto filename = this->directory + '\\' + str.C_Str();
 
-				textureInfo.id = texture->Load(filename);
+				textureInfo.id = texture->Load(str.C_Str());
 				textureInfo.type = typeName;
 				textureInfo.path = str.C_Str();
 				textures.push_back(textureInfo);

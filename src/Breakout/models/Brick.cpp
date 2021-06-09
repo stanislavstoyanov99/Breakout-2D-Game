@@ -1,7 +1,7 @@
 #include "Brick.h"
 
 Brick::Brick()
-	: Model("", false)
+	: Model()
 {
 	
 }

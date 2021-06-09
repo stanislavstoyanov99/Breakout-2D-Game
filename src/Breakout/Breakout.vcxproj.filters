@@ -51,6 +51,9 @@
     <ClCompile Include="models\Brick.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="models\GameObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -95,11 +98,12 @@
     <ClInclude Include="models\Brick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="models\GameObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\light_cube.frag.glsl" />
-    <None Include="res\light_cube.vert.glsl" />
-    <None Include="res\lighting.frag.glsl" />
-    <None Include="res\lighting.vert.glsl" />
+    <None Include="res\projection.frag.glsl" />
+    <None Include="res\projection.vert.glsl" />
   </ItemGroup>
 </Project>
