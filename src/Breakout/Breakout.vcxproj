@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="utils\InputHandler.cpp" />
     <ClCompile Include="models\GameObject.cpp" />
     <ClCompile Include="models\Brick.cpp" />
     <ClCompile Include="models\Ball.cpp" />
@@ -157,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="utils\InputHandler.h" />
     <ClInclude Include="models\GameObject.h" />
     <ClInclude Include="models\Brick.h" />
     <ClInclude Include="models\Mesh.h" />

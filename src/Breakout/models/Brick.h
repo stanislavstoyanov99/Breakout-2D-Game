@@ -9,7 +9,7 @@ class Brick : public Model
 public:
 	Brick();
 	Brick(std::string const& path, bool gamma = false);
-
+	
 	glm::vec3 position;
 	glm::vec3 scale;
 	float rotation;
