@@ -20,7 +20,7 @@ public:
 
 private:
 	void Init();
-	void Update(float dt);
+	void Update(GLFWwindow* window, float dt);
 	void Render();
 
 	void ProcessInput(GLFWwindow* window);
@@ -31,6 +31,9 @@ private:
 
 	void BuildLevel();
 	void UpdateCameraView(unsigned view);
+	bool IsTheGameWon();
+	void UpdatePlayerPosition(GLFWwindow* window);
+	void UpdateBallPosition(GLFWwindow* window);
 
 	std::unique_ptr<Shader> _shader;
 

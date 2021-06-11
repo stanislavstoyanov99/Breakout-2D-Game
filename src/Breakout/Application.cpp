@@ -39,7 +39,6 @@ glm::vec3 fourthCamView = camera.Position;
 // camera variables
 bool updateView;
 bool freeCamera;
-bool followPlayer;
 
 // screen dimensions
 int screenWidth = SCR_WIDTH;
@@ -52,9 +51,7 @@ bool stuckToPaddle;
 float offset = 0;
 
 // player
-glm::vec3 playerVelocity = {};
-bool moveLeft;
-bool moveRight;
+glm::vec3 playerVelocity = { 15.0f, 0.0f, 0.0f };
 int score;
 
 // bricks
@@ -241,7 +238,7 @@ void Application::Run()
 		ProcessCameras(window);
 
 		// handle updating
-		Update(deltaTime);
+		Update(window, deltaTime);
 
 		// handle rendering
 		Render();
@@ -260,14 +257,9 @@ void Application::Init()
 
 	updateView = false;
 	freeCamera = false;
-	followPlayer = false;
 
 	// ball stuck to paddle
 	stuckToPaddle = true;
-
-	// player controls
-	moveLeft = false;
-	moveRight = false;
 
 	_shader = std::make_unique<Shader>("res\\projection.vert.glsl", "res\\projection.frag.glsl");
 
@@ -306,7 +298,7 @@ void Application::Init()
 	glEnable(GL_DEPTH_TEST);
 }
 
-void Application::Update(float dt)
+void Application::Update(GLFWwindow* window, float dt)
 {
 	const auto viewMatrix = camera.GetViewMatrix();
 
@@ -316,6 +308,22 @@ void Application::Update(float dt)
 	_shader->use();
 	_shader->setFloatMat4("view", viewMatrix);
 	_shader->setFloatMat4("projection", projectionMatrix);
+	
+	if (state == GameState::Play)
+	{
+		gameWon = IsTheGameWon();
+		
+		if (gameWon)
+		{
+			state = GameState::Win;
+		}
+
+		// update the paddle
+		UpdatePlayerPosition(window);
+
+		// update the ball
+		UpdateBallPosition(window);
+	}
 }
 
 void Application::Render()
@@ -457,8 +465,7 @@ void Application::BuildLevel()
 
 		_brickTop->scale = glm::vec3(0.5f, 0.5f, 0.5f);
 		_brickTop->position = (glm::vec3(-12.0f + (1.0f * i), 10.0f, 0.0f));
-
-		//Set the bricks
+		
 		boundTop[i] = std::move(_brickTop);
 	}
 }
@@ -468,7 +475,6 @@ void Application::UpdateCameraView(unsigned view)
 	switch (view)
 	{
 	case 1:
-		followPlayer = false;
 		freeCamera = false;
 
 		camera.Position = firstCamView;
@@ -476,7 +482,6 @@ void Application::UpdateCameraView(unsigned view)
 		camera.Yaw = -90.0f;
 		break;
 	case 2:
-		followPlayer = false;
 		freeCamera = false;
 
 		camera.Position = secondCamView;
@@ -484,7 +489,6 @@ void Application::UpdateCameraView(unsigned view)
 		camera.Yaw = -90.0f;
 		break;
 	case 3:
-		followPlayer = false;
 		freeCamera = false;
 
 		camera.Position = thirdCamView;
@@ -492,7 +496,6 @@ void Application::UpdateCameraView(unsigned view)
 		camera.Yaw = -135.0f;
 		break;
 	case 4:
-		followPlayer = false;
 		freeCamera = true;
 
 		camera.Position = fourthCamView;
@@ -502,4 +505,87 @@ void Application::UpdateCameraView(unsigned view)
 	}
 
 	updateView = false;
+}
+
+bool Application::IsTheGameWon()
+{
+	for (int y = 0; y < numbBricksHigh; y++)
+	{
+		for (int x = 0; x < numbBricksWide; x++)
+		{
+			if (bricks[y][x]->brickAlive)
+			{
+				return !bricks[y][x]->brickAlive;
+			}
+		}
+	}
+
+	return true;
+}
+
+void Application::UpdatePlayerPosition(GLFWwindow* window)
+{
+	// release the ball
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+	{
+		stuckToPaddle = false;
+	}
+
+	if (_player->lives > 0)
+	{
+		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+		{
+			if (_player->position.x > -11.25f + offset)
+			{
+				_player->position.x -= playerVelocity.x * deltaTime;
+
+				auto player = glm::mat4(1.0f);
+				player = translate(player, glm::vec3(_player->position.x, _player->position.y, _player->position.z));
+
+				_shader->setFloatMat4("model", player);
+				_player->Draw(*_shader);
+			}
+		}
+		
+		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+		{
+			if (_player->position.x < 11.15f - offset)
+			{
+				_player->position.x += playerVelocity.x * deltaTime;
+
+				auto player = glm::mat4(1.0f);
+				player = translate(player, glm::vec3(_player->position.x, _player->position.y, _player->position.z));
+
+				_shader->setFloatMat4("model", player);
+				_player->Draw(*_shader);
+			}
+		}
+
+		if (stuckToPaddle)
+		{
+			_ball->position = glm::vec3
+			(
+				_player->position.x,
+				_player->position.y + _player->scale.y + (_ball->scale.y * 2),
+				_player->position.z
+			);
+
+			auto ball = glm::mat4(1.0f);
+			ball = translate(ball, glm::vec3(_ball->position.x, _ball->position.y, _ball->position.z));
+
+			_shader->setFloatMat4("model", ball);
+			_ball->Draw(*_shader);
+		}
+
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	}
+	else if (_player->lives <= 0)
+	{
+		state = GameState::Lose;
+	}
+}
+
+void Application::UpdateBallPosition(GLFWwindow* window)
+{
+	// TODO
 }
