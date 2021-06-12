@@ -14,7 +14,7 @@ public:
 	glm::vec3 scale;
 	float rotation;
 
-	unsigned hits;
+	int hits;
 	
 	bool brickAlive;
 	bool brickDying;

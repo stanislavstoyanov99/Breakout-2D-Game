@@ -26,14 +26,19 @@ private:
 	void ProcessInput(GLFWwindow* window);
 	void ProcessCameras(GLFWwindow* window);
 
-	friend void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-	friend void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-
 	void BuildLevel();
 	void UpdateCameraView(unsigned view);
 	bool IsTheGameWon();
+	
 	void UpdatePlayerPosition(GLFWwindow* window);
 	void UpdateBallPosition(GLFWwindow* window);
+	
+	bool CollisionDetection(std::unique_ptr<Ball>& ball, std::unique_ptr<Brick>& brick);
+	bool CollisionDetection(std::unique_ptr<Ball>& ball, std::unique_ptr<Player>& player);
+
+	void SetCrackedBrick(int x, int y);
+	void SetDeadBrick(int x, int y);
+	void SetDyingBrick(int x, int y);
 
 	std::unique_ptr<Shader> _shader;
 

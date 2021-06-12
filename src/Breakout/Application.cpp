@@ -26,7 +26,7 @@ GameState state;
 InputHandler inputHandler;
 
 // camera initialization
-Camera camera(glm::vec3(0.0f, 0.0f, 25.0f));
+Camera camera(glm::vec3(0.0f, 0.0f, 28.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 
@@ -43,10 +43,9 @@ bool freeCamera;
 // screen dimensions
 int screenWidth = SCR_WIDTH;
 int screenHeight = SCR_HEIGHT;
-float aspectRatio = (float)SCR_HEIGHT / (float)SCR_WIDTH;
 
 // ball
-glm::vec3 ballVelocity = {};
+glm::vec3 ballVelocity = { 5.5f, 10.0f, 0.0f };
 bool stuckToPaddle;
 float offset = 0;
 
@@ -261,6 +260,9 @@ void Application::Init()
 	// ball stuck to paddle
 	stuckToPaddle = true;
 
+	// player score
+	score = 0;
+
 	_shader = std::make_unique<Shader>("res\\projection.vert.glsl", "res\\projection.frag.glsl");
 
 	// load skybox model
@@ -286,8 +288,7 @@ void Application::Init()
 		_ball = std::make_unique<Ball>("res\\models\\ball\\ball.obj");
 
 		_ball->position = glm::vec3(_player->position.x, _player->position.y + _ball->scale.y, _player->position.z);
-		_ball->scale = glm::vec3(0.5f, 0.5f, 0.5f);
-		_ball->radius = _ball->scale.x / 2;
+		_ball->scale = glm::vec3(0.35f, 0.35f, 0.35f);
 	}
 
 	// level
@@ -441,8 +442,8 @@ void Application::BuildLevel()
 	{
 		_brickLeft = std::make_unique<Brick>("res\\models\\brick\\brick.obj");
 
-		_brickLeft->scale = glm::vec3(0.5f, 0.5f, 0.5f);
-		_brickLeft->position = (glm::vec3(-12.0f, -10.0f + (1.0f * i), 0.0f));
+		_brickLeft->scale = glm::vec3(1.0f, 1.0f, 1.0f);
+		_brickLeft->position = (glm::vec3(-12.0f, -10.0f + i, 0.0f));
 
 		boundLeft[i] = std::move(_brickLeft);
 	}
@@ -452,8 +453,8 @@ void Application::BuildLevel()
 	{
 		_brickRight = std::make_unique<Brick>("res\\models\\brick\\brick.obj");
 
-		_brickRight->scale = glm::vec3(0.5f, 0.5f, 0.5f);
-		_brickRight->position = (glm::vec3(12.0f, -10.0f + (1.0f * i), 0.0f));
+		_brickRight->scale = glm::vec3(1.0f, 1.0f, 1.0f);
+		_brickRight->position = (glm::vec3(12.0f, -10.0f + i, 0.0f));
 
 		boundRight[i] = std::move(_brickRight);
 	}
@@ -463,8 +464,8 @@ void Application::BuildLevel()
 	{
 		_brickTop = std::make_unique<Brick>("res\\models\\brick\\brick.obj");
 
-		_brickTop->scale = glm::vec3(0.5f, 0.5f, 0.5f);
-		_brickTop->position = (glm::vec3(-12.0f + (1.0f * i), 10.0f, 0.0f));
+		_brickTop->scale = glm::vec3(1.0f, 1.0f, 1.0f);
+		_brickTop->position = (glm::vec3(-12.0f + i, 10.0f, 0.0f));
 		
 		boundTop[i] = std::move(_brickTop);
 	}
@@ -585,7 +586,240 @@ void Application::UpdatePlayerPosition(GLFWwindow* window)
 	}
 }
 
+// TODO: Refactor this fat method
 void Application::UpdateBallPosition(GLFWwindow* window)
 {
-	// TODO
+	if (!stuckToPaddle)
+	{
+		_ball->position.x += ballVelocity.x * deltaTime;
+
+		auto ball = glm::mat4(1.0f);
+		ball = translate(ball, glm::vec3(_ball->position.x, _ball->position.y, _ball->position.z));
+
+		_shader->setFloatMat4("model", ball);
+		_ball->Draw(*_shader);
+		
+		// keep the ball inside the bounds of the screen
+		if (_ball->position.x <= -11.0f)
+		{
+			ballVelocity.x = -ballVelocity.x;
+			_ball->position.x = -11.0f;
+
+			ball = translate(ball, glm::vec3(_ball->position.x, _ball->position.y, _ball->position.z));
+			
+			_shader->setFloatMat4("model", ball);
+			_ball->Draw(*_shader);
+		}
+		else if (_ball->position.x >= 11.0f)
+		{
+			ballVelocity.x = -ballVelocity.x;
+			_ball->position.x = 11.0f;
+
+			ball = translate(ball, glm::vec3(_ball->position.x, _ball->position.y, _ball->position.z));
+
+			_shader->setFloatMat4("model", ball);
+			_ball->Draw(*_shader);
+		}
+
+		// check each brick for collision on the left and right
+		for (int y = 0; y < numbBricksHigh; y++)
+		{
+			for (int x = 0; x < numbBricksWide; x++)
+			{
+				if (bricks[y][x]->brickAlive)
+				{
+					if (CollisionDetection(_ball, bricks[y][x]))
+					{
+						SetCrackedBrick(x, y);
+						
+						ballVelocity.x = -ballVelocity.x;
+						_ball->position.x += ballVelocity.x * deltaTime;
+
+						ball = glm::mat4(1.0f);
+						ball = translate(
+							ball, glm::vec3(_ball->position.x, _ball->position.y, _ball->position.z));
+
+						_shader->setFloatMat4("model", ball);
+						_ball->Draw(*_shader);
+					}
+					
+					if (bricks[y][x]->hits < 0)
+					{
+						SetDeadBrick(x, y);
+					}
+				}
+				
+				// brick is dying
+				if (bricks[y][x]->brickDying)
+				{
+					SetDyingBrick(x, y);
+
+					auto brick = glm::mat4(1.0f);
+					brick = translate(brick, glm::vec3(bricks[y][x]->position.x, bricks[y][x]->position.y, bricks[y][x]->position.z));
+
+					_shader->setFloatMat4("model", brick);
+					bricks[y][x]->Draw(*_shader);
+				}
+
+				// brick is gone
+				if (bricks[y][x]->position.y < -15.0f)
+				{
+					bricks[y][x]->brickDying = false;
+				}
+			}
+		}
+
+		_ball->position.y += ballVelocity.y * deltaTime;
+
+		ball = translate(ball, glm::vec3(_ball->position.x, _ball->position.y, _ball->position.z));
+
+		_shader->setFloatMat4("model", ball);
+		_ball->Draw(*_shader);
+
+		// check for top side
+		if (_ball->position.y >= 9.0f)
+		{
+			ballVelocity.y = -ballVelocity.y;
+			_ball->position.y = 9.0f;
+
+			ball = translate(ball, glm::vec3(_ball->position.x, _ball->position.y, _ball->position.z));
+
+			_shader->setFloatMat4("model", ball);
+			_ball->Draw(*_shader);
+		}
+		// check for bottom side
+		else if (_ball->position.y <= -15.0f)
+		{
+			_player->lives--;
+			stuckToPaddle = true;
+		}
+		// player side - avoid ball sticking in paddle
+		else if (CollisionDetection(_ball, _player))
+		{
+			ballVelocity.y = 1 * abs(ballVelocity.y);
+		}
+
+		// check each brick for collision on the top and bottom
+		for (int y = 0; y < numbBricksHigh; y++)
+		{
+			for (int x = 0; x < numbBricksWide; x++)
+			{
+				if (bricks[y][x]->brickAlive)
+				{
+					if (CollisionDetection(_ball, bricks[y][x]))
+					{
+						SetCrackedBrick(x, y);
+						
+						ballVelocity.y = -ballVelocity.y;
+						_ball->position.y += ballVelocity.y * deltaTime;
+
+						ball = translate(ball, glm::vec3(_ball->position.x, _ball->position.y, _ball->position.z));
+
+						_shader->setFloatMat4("model", ball);
+						_ball->Draw(*_shader);
+					}
+					
+					if (bricks[y][x]->hits < 0)
+					{
+						SetDeadBrick(x, y);
+					}
+				}
+				
+				// brick is dying
+				if (bricks[y][x]->brickDying)
+				{
+					SetDyingBrick(x, y);
+
+					auto brick = glm::mat4(1.0f);
+					brick = translate(
+						brick, glm::vec3(bricks[y][x]->position.x, bricks[y][x]->position.y, bricks[y][x]->position.z));
+
+					_shader->setFloatMat4("model", brick);
+					bricks[y][x]->Draw(*_shader);
+				}
+
+				// brick is gone
+				if (bricks[y][x]->position.y < -15.0f)
+				{
+					bricks[y][x]->brickDying = false;
+				}
+			}
+		}
+
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	}
+}
+
+bool Application::CollisionDetection(std::unique_ptr<Ball>& ball, std::unique_ptr<Brick>& brick)
+{
+	// calculate the sides of ball
+	float ballLeft = ball->position.x - ball->scale.x;
+	float ballRight = ball->position.x + ball->scale.x;
+	float ballTop = ball->position.y - ball->scale.x;
+	float ballBottom = ball->position.y + ball->scale.x;
+
+	// calculate the sides of brick
+	float brickLeft = brick->position.x - brick->scale.x;
+	float brickRight = brick->position.x + brick->scale.x;
+	float brickTop = brick->position.y - brick->scale.x;
+	float brickBottom = brick->position.y + brick->scale.x;
+
+	// if any of the sides from the ball are outside of the brick
+	if (ballBottom <= brickTop) return false;
+	if (ballTop >= brickBottom) return false;
+	if (ballRight <= brickLeft) return false;
+	if (ballLeft >= brickRight) return false;
+
+	// if any of the sides from the ball are inside of the brick
+	return true;
+}
+
+bool Application::CollisionDetection(std::unique_ptr<Ball>& ball, std::unique_ptr<Player>& player)
+{
+	// calculate the sides of ball
+	float ballLeft = ball->position.x - ball->scale.x;
+	float ballRight = ball->position.x + ball->scale.x;
+	float ballTop = ball->position.y - ball->scale.x;
+	float ballBottom = ball->position.y + ball->scale.x;
+
+	// calculate the sides of player
+	float playerLeft = player->position.x - player->scale.x;
+	float playerRight = player->position.x + player->scale.x;
+	float playerTop = player->position.y - player->scale.y;
+	float playerBottom = player->position.y + player->scale.y;
+
+	// if any of the sides from the ball are outside of the player
+	if (ballBottom <= playerTop) return false;
+	if (ballTop >= playerBottom) return false;
+	if (ballRight <= playerLeft) return false;
+	if (ballLeft >= playerRight) return false;
+
+	// if any of the sides from the ball are inside of the player
+	return true;
+}
+
+void Application::SetCrackedBrick(const int x, const int y)
+{
+	bricks[y][x]->hits -= 1;
+	
+	score += 1;
+}
+
+void Application::SetDeadBrick(const int x, const int y)
+{
+	bricks[y][x]->brickDying = true;
+	bricks[y][x]->brickAlive = false;
+	
+	score += 3;
+}
+
+void Application::SetDyingBrick(const int x, const int y)
+{
+	bricks[y][x]->position.y -= 9.5f * deltaTime;
+	bricks[y][x]->rotation += 0.075f;
+	
+	if (bricks[y][x]->scale.x > 0.0f)
+	{
+		bricks[y][x]->scale -= 0.75f * deltaTime;
+	}
 }
