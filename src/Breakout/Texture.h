@@ -14,7 +14,7 @@ public:
 	int GetTexture() const { return _texture; }
 
 private:
-	unsigned int _texture;
+	unsigned int _texture = 0;
 
 	int _width = 0;
 	int _height = 0;

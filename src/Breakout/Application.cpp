@@ -9,7 +9,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-
 #include "Camera.h"
 #include "Settings.h"
 #include "Shader.h"
@@ -71,7 +70,6 @@ glm::mat4 modelTranslate;
 glm::mat4 modelScale;
 glm::mat4 modelRotation;
 
-// variables
 bool gameWon;
 
 // timing
@@ -557,23 +555,23 @@ void Application::BuildLevel()
 
 			if (y == 0 || y == 5)
 			{
-				_brick->colour = { 1.0f, 0.5f, 0.0f };
+				_brick->colour = { 0.0f, 0.5f, 1.0f };
 			}
 			else if (y == 1 || y == 6)
 			{
-				_brick->colour = { 0.5f, 1.0f, 0.5f };
+				_brick->colour = { 1.0f, 1.0f, 0.0f };
 			}
 			else if (y == 2 || y == 7)
 			{
-				_brick->colour = { 0.0f, 0.5f, 1.0f };
+				_brick->colour = { 1.0f, 0.0f, 0.0f };
 			}
 			else if (y == 3 || y == 8)
 			{
-				_brick->colour = { 1.0f, 1.0f, 0.0f };
+				_brick->colour = { 0.0f, 1.0f, 0.0f };
 			}
 			else if (y == 4 || y == 9)
 			{
-				_brick->colour = { 1.0f, 0.0f, 0.0f };
+				_brick->colour = { 1.0f, 1.0f, 1.0f };
 			}
 			else
 			{
@@ -596,27 +594,11 @@ void Application::BuildLevel()
 
 		_brickLeft->scale = glm::vec3(0.5f, 0.5f, 0.5f);
 		_brickLeft->position = (glm::vec3(-12.0f, -10.0f + i, 0.0f));
-		_brickLeft->colour = { 1.0f, 1.0f, 0.0f };
+		_brickLeft->colour = { 1.0f, 1.0f, 1.0f };
 
 		_brickLeft->texture = *std::move(blockTexture);
 
 		boundLeft[i] = std::move(_brickLeft);
-	}
-
-	// right bound
-	for (int i = 0; i < boundBlocks; i++)
-	{
-		_brickRight = std::make_unique<Brick>();
-		_brickRight->loadASSIMP("res\\models\\brick\\cube.obj");
-		_brickRight->setBuffers();
-
-		_brickRight->scale = glm::vec3(0.5f, 0.5f, 0.5f);
-		_brickRight->position = (glm::vec3(12.0f, -10.0f + i, 0.0f));
-		_brickRight->colour = { 1.0f, 1.0f, 0.0f };
-
-		_brickRight->texture = *std::move(blockTexture);
-
-		boundRight[i] = std::move(_brickRight);
 	}
 
 	// top bound
@@ -628,11 +610,27 @@ void Application::BuildLevel()
 
 		_brickTop->scale = glm::vec3(0.5f, 0.5f, 0.5f);
 		_brickTop->position = (glm::vec3(-12.0f + i, 10.0f, 0.0f));
-		_brickTop->colour = { 1.0f, 1.0f, 0.0f };
+		_brickTop->colour = { 0.0f, 1.0f, 0.0f };
 
 		_brickTop->texture = *std::move(blockTexture);
 
 		boundTop[i] = std::move(_brickTop);
+	}
+	
+	// right bound
+	for (int i = 0; i < boundBlocks; i++)
+	{
+		_brickRight = std::make_unique<Brick>();
+		_brickRight->loadASSIMP("res\\models\\brick\\cube.obj");
+		_brickRight->setBuffers();
+
+		_brickRight->scale = glm::vec3(0.5f, 0.5f, 0.5f);
+		_brickRight->position = (glm::vec3(12.0f, -10.0f + i, 0.0f));
+		_brickRight->colour = { 1.0f, 0.0f, 0.0f };
+
+		_brickRight->texture = *std::move(blockTexture);
+
+		boundRight[i] = std::move(_brickRight);
 	}
 }
 
@@ -773,13 +771,11 @@ void Application::UpdateBallPosition(GLFWwindow* window)
 					}
 				}
 				
-				// brick is dying
 				if (bricks[y][x]->brickDying)
 				{
 					SetDyingBrick(x, y);
 				}
 
-				// brick is gone
 				if (bricks[y][x]->position.y < -15.0f)
 				{
 					bricks[y][x]->brickDying = false;
@@ -828,13 +824,11 @@ void Application::UpdateBallPosition(GLFWwindow* window)
 					}
 				}
 				
-				// brick is dying
 				if (bricks[y][x]->brickDying)
 				{
 					SetDyingBrick(x, y);
 				}
 
-				// brick is gone
 				if (bricks[y][x]->position.y < -15.0f)
 				{
 					bricks[y][x]->brickDying = false;
@@ -925,25 +919,25 @@ void Application::SetDyingBrick(const int x, const int y)
 
 void Application::RenderSprite(std::unique_ptr<Shader>& shader, glm::mat4 translation, glm::mat4 scale, glm::vec3 colour, Texture& texture)
 {
-	glUniformMatrix4fv(glGetUniformLocation(shader->ID, "uModel"), 1, GL_FALSE, glm::value_ptr(translation * scale));
-	glUniformMatrix4fv(glGetUniformLocation(shader->ID, "uView"), 1, GL_FALSE, glm::value_ptr(orthoViewMatrix));
-	glUniformMatrix4fv(glGetUniformLocation(shader->ID, "uProjection"), 1, GL_FALSE, glm::value_ptr(orthoProgMatrix));
-	glUniform3f(glGetUniformLocation(shader->ID, "uColour"), colour.x, colour.y, colour.z);
-	
+	shader->setFloatMat4("uModel", glm::mat4(translation * scale));
+	shader->setFloatMat4("uView", glm::mat4(orthoViewMatrix));
+	shader->setFloatMat4("uProjection", glm::mat4(orthoProgMatrix));
+	shader->setFloat3("uColour", glm::vec3(colour.x, colour.y, colour.z));
+
 	glBindTexture(GL_TEXTURE_2D, texture.GetTexture());
 }
 
 void Application::RenderObject(std::unique_ptr<Shader>& shader, glm::mat4 translation, glm::mat4 rotation, glm::mat4 scale, glm::vec3 colour, Texture& texture)
 {
 	// lighting
-	glUniform3f(glGetUniformLocation(shader->ID, "uObjectColour"), colour.x, colour.y, colour.z);
-	glUniform3f(glGetUniformLocation(shader->ID, "uLightColour"), _lightColour.x, _lightColour.y, _lightColour.z);
-	glUniform3f(glGetUniformLocation(shader->ID, "uLightPosition"), _lightPos.x, _lightPos.y, _lightPos.z);
-	glUniform3f(glGetUniformLocation(shader->ID, "uViewPosition"), camera.Position.x, camera.Position.y, camera.Position.z);
+	shader->setFloat3("uObjectColour", glm::vec3(colour.x, colour.y, colour.z));
+	shader->setFloat3("uLightColour", glm::vec3(_lightColour.x, _lightColour.y, _lightColour.z));
+	shader->setFloat3("uLightPosition", glm::vec3(_lightPos.x, _lightPos.y, _lightPos.z));
+	shader->setFloat3("uViewPosition", glm::vec3(camera.Position.x, camera.Position.y, camera.Position.z));
 
-	glUniformMatrix4fv(glGetUniformLocation(shader->ID, "uModel"), 1, GL_FALSE, glm::value_ptr(translation * rotation * scale));
-	glUniformMatrix4fv(glGetUniformLocation(shader->ID, "uView"), 1, GL_FALSE, glm::value_ptr(camera.GetViewMatrix()));
-	glUniformMatrix4fv(glGetUniformLocation(shader->ID, "uProjection"), 1, GL_FALSE, glm::value_ptr(glm::perspective(glm::radians(camera.Zoom), (float)screenWidth / (float)screenHeight, 0.1f, 1000.0f)));
+	shader->setFloatMat4("uModel", glm::mat4(translation * rotation * scale));
+	shader->setFloatMat4("uView", glm::mat4(camera.GetViewMatrix()));
+	shader->setFloatMat4("uProjection", glm::mat4(glm::perspective(glm::radians(camera.Zoom), (float)screenWidth / (float)screenHeight, 0.1f, 1000.0f)));
 
 	glBindTexture(GL_TEXTURE_2D, texture.GetTexture());
 }
@@ -1006,10 +1000,8 @@ void Application::LoadScore()
 
 void Application::SetScore()
 {
-	// Get the score as a string
 	std::string scoreStr = std::to_string(score);
 
-	// Get the end of the vector
 	int pos = static_cast<int>(scoreObject.size()) - 1;
 
 	// Loop through the score string from the end to start
