@@ -1,11 +1,5 @@
 ﻿  Application.cpp
-D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(229,41): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(229,28): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.28.29910\include\memory(3579,1): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\models\Mesh.h(107): message : see reference to function template instantiation 'std::unique_ptr<VertexBuffer,std::default_delete<VertexBuffer>> std::make_unique<VertexBuffer,_Ty*,unsigned __int64,0>(_Ty *&&,unsigned __int64 &&)' being compiled
-          with
-          [
-              _Ty=Vertex
-          ]
+D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(200,41): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(200,28): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
 LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   Breakout.vcxproj -> D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\x64\Debug\Breakout.exe

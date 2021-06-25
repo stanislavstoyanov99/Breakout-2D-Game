@@ -1,42 +1,30 @@
 #version 460 core
+out vec4 colourFragment;
 
-struct Material {
-    sampler2D texture_diffuse1;
-    float shininess;
-};
+in vec2 textureCoordinates;
+in vec3 transposedNormals;
+in vec3 fragmentPosition;
+in vec3 lightColour;
 
-struct Light {
-    vec3 position;
-  
-    vec3 ambient;
-    vec3 diffuse;
-};
-
-out vec4 FragColor;
-  
-uniform vec3 viewPos;
-
-uniform Material material;
-uniform Light light;
-
-in vec3 Normal;
-in vec3 FragPos;
-in vec2 TexCoords;
+uniform vec3 uLightPosition; 
+uniform vec3 uViewPosition; 
+uniform vec3 uObjectColour;
+uniform sampler2D uTexture;
 
 void main()
-{    
-    vec3 diffuseColor = vec3(texture(material.texture_diffuse1, TexCoords));
-
-    // ambient
-    vec3 ambient = light.ambient * diffuseColor;
+{
+    // ambient light component
+    float ambientCoefficient = 0.5f;
+    vec3 ambient = ambientCoefficient * lightColour;
   	
-    // diffuse 
-    vec3 norm = normalize(Normal);
-    vec3 lightDir = normalize(light.position - FragPos);
-    float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = light.diffuse * diff * diffuseColor;
+    // diffuse light component
+	float diffuseCoefficient = 0.8f;	
+    vec3 normalizedNormal = normalize(transposedNormals);
+    vec3 lightDirection = normalize(uLightPosition - fragmentPosition);
+    float diffuseMax = max(dot(normalizedNormal, lightDirection), 0.0);
+    vec3 diffuse = diffuseCoefficient * diffuseMax * lightColour;
 
-    // combined
-    vec3 result = ambient + diffuse;
-    FragColor = vec4(result, 1.0);
-}
+	// resultant output fragment colour
+	vec3 ambientDiffuseSpecular = (ambient + diffuse) * uObjectColour;
+    colourFragment =  vec4(ambientDiffuseSpecular, 1.0) * texture(uTexture, textureCoordinates);
+} 

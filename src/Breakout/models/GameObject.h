@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Model.h"
+#include "../Texture.h"
 
 class GameObject : public Model
 {
@@ -10,9 +11,11 @@ public:
 
 	glm::vec3 position;
 	glm::vec3 scale;
+	glm::vec3 colour;
+
+	Texture texture;
 
 	float rotation;
-
-	//Is the gamobject active
+	
 	bool active;
 };

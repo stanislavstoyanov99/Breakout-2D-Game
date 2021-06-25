@@ -2,19 +2,20 @@
 
 #include <glm/vec3.hpp>
 
-#include "Model.h"
+#include "Square.h"
 #include "../Texture.h"
 
-class Ball : public Model
+class Sprite
+	: public Square
 {
 public:
-	Ball();
-	Ball(std::string const& path, bool gamma = false);
+	Sprite();
 
 	glm::vec3 position;
 	glm::vec3 scale;
-	glm::vec3 velocity;
 	glm::vec3 colour;
 
 	Texture texture;
+
+	bool active;
 };

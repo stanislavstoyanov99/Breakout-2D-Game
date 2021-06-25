@@ -54,7 +54,13 @@
     <ClCompile Include="models\GameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="utils\InputHandler.cpp">
+    <ClCompile Include="models\Sprite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="models\Square.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="models\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,9 +95,6 @@
     <ClInclude Include="models\Ball.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="models\Model.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="models\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -104,12 +107,23 @@
     <ClInclude Include="models\GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="utils\InputHandler.h">
+    <ClInclude Include="models\Sprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="models\Square.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="models\Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\projection.frag.glsl" />
     <None Include="res\projection.vert.glsl" />
+    <None Include="res\spriteProjection.frag.glsl" />
+    <None Include="res\spriteProjection.vert.glsl" />
   </ItemGroup>
 </Project>

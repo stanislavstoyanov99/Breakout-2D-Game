@@ -9,6 +9,7 @@
 #include "models/Brick.h"
 #include "models/Model.h"
 #include "models/Player.h"
+#include "models/Sprite.h"
 #include "models/GameObject.h"
 
 struct GLFWwindow;
@@ -40,10 +41,21 @@ private:
 	void SetDeadBrick(int x, int y);
 	void SetDyingBrick(int x, int y);
 
-	std::unique_ptr<Shader> _shader;
+	void LoadScore();
+	void SetScore();
 
-	std::unique_ptr<GameObject> _skybox;
+	void RenderObject(std::unique_ptr<Shader>& shader, glm::mat4 translation, glm::mat4 rotation, glm::mat4 scale, glm::vec3 colour, Texture& texture);
+	void RenderSprite(std::unique_ptr<Shader>& shader, glm::mat4 translation, glm::mat4 scale, glm::vec3 colour, Texture& texture);
+	void ResetMatrices();
+	
+	std::unique_ptr<Shader> _shader;
+	std::unique_ptr<Shader> _spriteShader;
+
+	std::unique_ptr<GameObject> _background;
 	std::unique_ptr<Player> _player;
+	std::unique_ptr<Sprite> _lives;
+	std::unique_ptr<Sprite> _win;
+	std::unique_ptr<Sprite> _gameover;
 	std::unique_ptr<Ball> _ball;
 	
 	std::unique_ptr<Brick> _brick;
@@ -52,4 +64,6 @@ private:
 	std::unique_ptr<Brick> _brickTop;
 
 	glm::vec3 _lightPos = glm::vec3(30.0f, 30.0f, 30.0f);
+	glm::vec3 _lightColour = glm::vec3(0.8f, 0.9f, 0.8f);
+	GLfloat _lightRotation = -0.001f;
 };

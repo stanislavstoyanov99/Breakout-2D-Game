@@ -142,7 +142,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="utils\InputHandler.cpp" />
+    <ClCompile Include="models\Model.cpp" />
+    <ClCompile Include="models\Sprite.cpp" />
+    <ClCompile Include="models\Square.cpp" />
     <ClCompile Include="models\GameObject.cpp" />
     <ClCompile Include="models\Brick.cpp" />
     <ClCompile Include="models\Ball.cpp" />
@@ -158,11 +160,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
-    <ClInclude Include="utils\InputHandler.h" />
+    <ClInclude Include="models\Model.h" />
+    <ClInclude Include="models\Sprite.h" />
+    <ClInclude Include="models\Square.h" />
     <ClInclude Include="models\GameObject.h" />
     <ClInclude Include="models\Brick.h" />
     <ClInclude Include="models\Mesh.h" />
-    <ClInclude Include="models\Model.h" />
     <ClInclude Include="models\Ball.h" />
     <ClInclude Include="buffers\BufferLayout.h" />
     <ClInclude Include="buffers\VertexBuffer.h" />
@@ -172,11 +175,14 @@
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexArray.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\projection.frag.glsl" />
     <None Include="res\projection.vert.glsl" />
+    <None Include="res\spriteProjection.frag.glsl" />
+    <None Include="res\spriteProjection.vert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

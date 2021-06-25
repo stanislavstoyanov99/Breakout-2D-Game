@@ -11,6 +11,8 @@ public:
 	int GetWidth() const { return _width; }
 	int GetHeight() const { return _height; }
 
+	int GetTexture() const { return _texture; }
+
 private:
 	unsigned int _texture;
 
