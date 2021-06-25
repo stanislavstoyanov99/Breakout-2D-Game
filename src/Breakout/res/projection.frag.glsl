@@ -14,7 +14,7 @@ uniform sampler2D uTexture;
 void main()
 {
     // ambient light component
-    float ambientCoefficient = 0.5f;
+    float ambientCoefficient = 0.4f;
     vec3 ambient = ambientCoefficient * lightColour;
   	
     // diffuse light component
