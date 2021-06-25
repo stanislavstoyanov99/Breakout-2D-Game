@@ -10,7 +10,6 @@ class Player : public Model
 {
 public:
 	Player();
-	Player(std::string const& path, bool gamma = false);
 
 	glm::vec3 position;
 	glm::vec3 scale;

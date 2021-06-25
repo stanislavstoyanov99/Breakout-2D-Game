@@ -800,7 +800,7 @@ void Application::UpdateBallPosition(GLFWwindow* window)
 		// player side - avoid ball sticking in paddle
 		else if (CollisionDetection(_ball, _player))
 		{
-			ballVelocity.y = 1 * abs(ballVelocity.y);
+			ballVelocity.y = abs(ballVelocity.y);
 		}
 
 		// check each brick for collision on the top and bottom
@@ -891,7 +891,7 @@ bool Application::CollisionDetection(std::unique_ptr<Ball>& ball, std::unique_pt
 void Application::SetCrackedBrick(const int x, const int y)
 {
 	bricks[y][x]->hits -= 1;
-	bricks[y][x]->texture = std::move(bricks[y][x]->cracked);
+	bricks[y][x]->texture =  bricks[y][x]->cracked;
 	
 	score += 1;
 	SetScore();

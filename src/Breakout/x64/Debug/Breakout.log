@@ -1,12 +1,4 @@
 ﻿  Application.cpp
 D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(198,41): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\Breakout\Application.cpp(198,28): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
-  Main.cpp
-  Texture.cpp
-  Ball.cpp
-  Brick.cpp
-  GameObject.cpp
-  Player.cpp
-  Sprite.cpp
-  Generating Code...
   Breakout.vcxproj -> D:\TU Programming\Sixth semester\Computer graphic\Course Project\Breakout\x64\Debug\Breakout.exe
